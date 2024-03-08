@@ -1,0 +1,120 @@
+USE DATABASE Database;
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    RegistrationDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE Messages (
+    MessageID INT PRIMARY KEY IDENTITY(1,1),
+    UserID INT FOREIGN KEY REFERENCES Users(UserID),
+    Topic NVARCHAR(50) NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    PublishDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE ActivityLog (
+    LogID INT PRIMARY KEY IDENTITY(1,1),
+    UserID INT FOREIGN KEY REFERENCES Users(UserID),
+    ActivityType NVARCHAR(50) NOT NULL,
+    ActivityDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+CCREATE PROCEDURE InsertUser
+    @Username NVARCHAR(50),
+    @PasswordHash NVARCHAR(100),
+    @Email NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM Users WHERE Username = @Username)
+    BEGIN
+        RAISERROR('Username already exists.', 16, 1);
+        RETURN;
+    END
+
+    IF LEN(@Username) < 3 OR LEN(@PasswordHash) < 6 OR LEN(@Email) < 5
+    BEGIN
+        RAISERROR('Invalid input parameters.', 16, 1);
+        RETURN;
+    END
+
+    BEGIN TRY
+        INSERT INTO Users (Username, PasswordHash, Email)
+        VALUES (@Username, @PasswordHash, @Email);
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SET @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN;
+    END CATCH
+END;
+
+CREATE PROCEDURE InsertMessage
+    @UserID INT,
+    @Topic NVARCHAR(50),
+    @Content NVARCHAR(MAX)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = @UserID)
+    BEGIN
+        RAISERROR('User does not exist.', 16, 1);
+        RETURN;
+    END
+
+    IF LEN(@Topic) < 1 OR LEN(@Content) < 1
+    BEGIN
+        RAISERROR('Invalid input parameters.', 16, 1);
+        RETURN;
+    END
+
+    BEGIN TRY
+        INSERT INTO Messages (UserID, Topic, Content)
+        VALUES (@UserID, @Topic, @Content);
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SET @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN;
+    END CATCH
+END;
+
+CREATE PROCEDURE LogActivity
+    @UserID INT,
+    @ActivityType NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = @UserID)
+    BEGIN
+        RAISERROR('User does not exist.', 16, 1);
+        RETURN;
+    END
+
+    IF LEN(@ActivityType) < 1
+    BEGIN
+        RAISERROR('Invalid activity type.', 16, 1);
+        RETURN;
+    END
+
+    BEGIN TRY
+        INSERT INTO ActivityLog (UserID, ActivityType)
+        VALUES (@UserID, @ActivityType);
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SET @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN;
+    END CATCH
+END;
+
+
