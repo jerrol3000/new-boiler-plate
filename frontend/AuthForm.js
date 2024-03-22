@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../public/style.css";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
@@ -20,51 +21,38 @@ const Auth = () => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>{isLogin ? "Login" : "Register"}</h1>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "inline-block", textAlign: "left" }}
-      >
-        <div style={{ marginBottom: "1rem" }}>
+    <div className="form-container">
+      {" "}
+      {/* Use className instead of style attribute */}
+      <h1 className="form-header">{isLogin ? "Login" : "Register"}</h1>
+      <form onSubmit={handleSubmit} className="form">
+        {" "}
+        {/* Use className instead of style attribute */}
+        <div className="form-group">
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            style={{ padding: "0.5rem", marginRight: "1rem", width: "200px" }}
+            className="form-input"
           />
         </div>
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="form-group">
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ padding: "0.5rem", marginRight: "1rem", width: "200px" }}
+            className="form-input"
           />
         </div>
-        <button
-          type="submit"
-          style={{
-            padding: "0.5rem 1rem",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
+        <button type="submit" className="form-button">
           {isLogin ? "Login" : "Register"}
         </button>
       </form>
-      <p
-        onClick={handleToggleForm}
-        style={{
-          cursor: "pointer",
-          color: "red",
-        }}
-      >
+      <p onClick={handleToggleForm} className="toggle-link">
+        {" "}
+        {/* Use className instead of style attribute */}
         {isLogin
           ? "I don't have an account, Register"
           : "I already have and account, Login"}
