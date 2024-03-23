@@ -6,6 +6,7 @@ const db = require("../config/db");
 
 // Register a new user
 router.post("/register", async (req, res) => {
+  const {username, password} = req.body
   try {
     const { username, password } = req.body;
 

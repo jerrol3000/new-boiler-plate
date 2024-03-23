@@ -22,7 +22,7 @@ CREATE TABLE ActivityLog (
     ActivityType NVARCHAR(50) NOT NULL,
     ActivityDate DATETIME NOT NULL DEFAULT GETDATE()
 );
-CCREATE PROCEDURE InsertUser
+CREATE PROCEDURE RegisterUser
     @Username NVARCHAR(50),
     @PasswordHash NVARCHAR(100),
     @Email NVARCHAR(100)
@@ -54,7 +54,7 @@ BEGIN
     END CATCH
 END;
 
-CREATE PROCEDURE InsertMessage
+CREATE PROCEDURE CreateMessage
     @UserID INT,
     @Topic NVARCHAR(50),
     @Content NVARCHAR(MAX)
