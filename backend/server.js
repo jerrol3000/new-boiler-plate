@@ -1,6 +1,7 @@
+const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
-const express = require("express");
+
 const app = express();
 module.exports = app;
 
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // auth and api routes
 app.use("/messages", require("./routines/messages"));
-app.use("/auth", require("./routines/auth"));
+app.use("/", require("./routines/auth"));
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "public/index.html"))

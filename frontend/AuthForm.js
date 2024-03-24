@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "../public/style.css";
 
 const Auth = () => {
@@ -8,11 +9,19 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Make POST request to backend for user login or registration based on isLogin state
-    if (isLogin) {
-      // Handle login
-    } else {
-      // Handle registration
+    const formData = { username, password };
+    console.log("Form Data:", formData);
+    const url = isLogin ? "/login" : "/register";
+    try {
+      await axios.post(url, formData);
+
+      if (isLogin) {
+        // Handle login
+      } else {
+        // Handle registration
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
