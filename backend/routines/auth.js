@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
 // Register a new user
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
+  console.log("req.body", req.body);
   try {
     // Check if username is taken
     const existingUser = await db.query(

@@ -60,10 +60,22 @@ var Auth = function Auth() {
     _useState4 = _slicedToArray(_useState3, 2),
     password = _useState4[0],
     setPassword = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState6 = _slicedToArray(_useState5, 2),
-    isLogin = _useState6[0],
-    setIsLogin = _useState6[1];
+    email = _useState6[0],
+    setEmail = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState8 = _slicedToArray(_useState7, 2),
+    confirmPassword = _useState8[0],
+    setConfirmPassword = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState10 = _slicedToArray(_useState9, 2),
+    isLogin = _useState10[0],
+    setIsLogin = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState12 = _slicedToArray(_useState11, 2),
+    error = _useState12[0],
+    setError = _useState12[1];
   var handleSubmit = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
       var formData, url;
@@ -71,32 +83,50 @@ var Auth = function Auth() {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             e.preventDefault();
-            formData = {
+            _context.prev = 1;
+            if (!username.trim() || !password.trim()) {
+              alert("Please fill out all required fields.");
+            }
+            if (!isLogin) {
+              if (!email.trim()) {
+                alert("Please provide an email address.");
+              }
+              if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+              }
+            }
+            setError("");
+            formData = isLogin ? {
               username: username,
               password: password
-            };
-            console.log("Form Data:", formData);
+            } : {
+              username: username,
+              password: password,
+              email: email
+            }; // Submit form data
             url = isLogin ? "/login" : "/register";
-            _context.prev = 4;
-            _context.next = 7;
+            _context.next = 9;
             return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post(url, formData);
-          case 7:
-            if (isLogin) {
-              // Handle login
-            } else {
-              // Handle registration
-            }
-            _context.next = 13;
+          case 9:
+            // Clear form fields after successful submission
+            setUsername("");
+            setPassword("");
+            setConfirmPassword("");
+            setEmail("");
+
+            // Optionally handle login or registration success here
+            _context.next = 19;
             break;
-          case 10:
-            _context.prev = 10;
-            _context.t0 = _context["catch"](4);
+          case 15:
+            _context.prev = 15;
+            _context.t0 = _context["catch"](1);
             console.error("Error:", _context.t0);
-          case 13:
+            setError(_context.t0.message); // Set error message
+          case 19:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[4, 10]]);
+      }, _callee, null, [[1, 15]]);
     }));
     return function handleSubmit(_x) {
       return _ref.apply(this, arguments);
@@ -104,15 +134,22 @@ var Auth = function Auth() {
   }();
   var handleToggleForm = function handleToggleForm() {
     setIsLogin(!isLogin);
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setConfirmPassword("");
+    setError("");
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "form-container"
-  }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
     className: "form-header"
-  }, isLogin ? "Login" : "Register"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+  }, isLogin ? "Login" : "Register"), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "error-message"
+  }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     onSubmit: handleSubmit,
     className: "form"
-  }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
@@ -132,13 +169,33 @@ var Auth = function Auth() {
       return setPassword(e.target.value);
     },
     className: "form-input"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  })), !isLogin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "password",
+    placeholder: "Confirm password",
+    value: confirmPassword,
+    onChange: function onChange(e) {
+      return setConfirmPassword(e.target.value);
+    },
+    className: "form-input"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "email",
+    placeholder: "Email",
+    value: email,
+    onChange: function onChange(e) {
+      return setEmail(e.target.value);
+    },
+    className: "form-input"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "submit",
     className: "form-button"
   }, isLogin ? "Login" : "Register")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     onClick: handleToggleForm,
     className: "toggle-link"
-  }, " ", isLogin ? "I don't have an account, Register" : "I already have and account, Login"));
+  }, isLogin ? "I don't have an account, Register" : "I already have an account, Login"));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Auth);
 
