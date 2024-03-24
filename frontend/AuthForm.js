@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../public/style.css";
 import { authenticate } from "./store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +14,13 @@ const Auth = () => {
   const [error, setError] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    !!auth.id && navigate("/subscribe");
+    !!auth.id && console.log("login happened");
+  }, [auth, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,9 +47,8 @@ const Auth = () => {
 
       // Submit form data
       const url = isLogin ? "/login" : "/register";
-      const response = await axios.post(url, formData);
+      await axios.post(url, formData);
       dispatch(authenticate(formData));
-      console.log("response", response);
 
       // Clear form fields after successful submission
       setUsername("");

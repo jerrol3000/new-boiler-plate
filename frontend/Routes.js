@@ -16,6 +16,7 @@ import Subscribe from "./Subscribe";
 const AppRoutes = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const isLoggedIn = !!auth.id;
 
   useEffect(() => {
     dispatch(me());
@@ -23,7 +24,7 @@ const AppRoutes = () => {
 
   return (
     <div>
-      {!auth ? (
+      {isLoggedIn ? (
         <Router>
           <Routes>
             <Route path="*" index element={<Publish />} />
