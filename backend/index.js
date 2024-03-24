@@ -1,6 +1,9 @@
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const { db } = require("./db");
 const app = require("./server");
+const PORT = process.env.PORT || 3000;
 
-// start listening (and create a 'server' object representing our server)
-app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`));
+db.sync().then(() => {
+  console.log("db synced");
+  app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+});

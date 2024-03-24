@@ -1,10 +1,10 @@
 import React from "react";
-import Auth from "./AuthForm";
+import AppRoutes from "./Routes";
 
 const App = () => {
   return (
     <div>
-      <Auth />
+      <AppRoutes />
     </div>
   );
 };

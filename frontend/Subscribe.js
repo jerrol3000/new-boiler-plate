@@ -1,8 +1,8 @@
 // Subscribe.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Subscribe = () => {
-  const [topic, setTopic] = useState('');
+  const [topic, setTopic] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +13,12 @@ const Subscribe = () => {
     <div>
       <h2>Subscribe to Topic</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Topic" value={topic} onChange={(e) => setTopic(e.target.value)} />
+        <input
+          type="text"
+          placeholder="Topic"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+        />
         <button type="submit">Subscribe</button>
       </form>
     </div>

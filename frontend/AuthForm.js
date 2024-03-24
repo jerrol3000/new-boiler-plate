@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import "../public/style.css";
+import { authenticate } from "./store/authSlice";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +11,8 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +39,9 @@ const Auth = () => {
 
       // Submit form data
       const url = isLogin ? "/login" : "/register";
-      await axios.post(url, formData);
+      const response = await axios.post(url, formData);
+      dispatch(authenticate(formData));
+      console.log("response", response);
 
       // Clear form fields after successful submission
       setUsername("");
