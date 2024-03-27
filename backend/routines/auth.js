@@ -1,14 +1,9 @@
 const router = require("express").Router();
-const { User } = require("../db");
+const {
+  models: { User },
+} = require("../db");
+module.exports = router;
 
-// Login
-router.get("/login", async (req, res, next) => {
-  try {
-    res.send(await User.findByToken(req.headers.authorization));
-  } catch (ex) {
-    next(ex);
-  }
-});
 router.post("/login", async (req, res, next) => {
   try {
     res.send({ token: await User.authenticate(req.body) });
@@ -17,8 +12,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-// Register a new user
-router.post("/register", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   try {
     const user = await User.create(req.body);
     res.send({ token: await user.generateToken() });
@@ -34,9 +28,7 @@ router.post("/register", async (req, res, next) => {
 router.get("/me", async (req, res, next) => {
   try {
     res.send(await User.findByToken(req.headers.authorization));
-  } catch (err) {
-    next(err);
+  } catch (ex) {
+    next(ex);
   }
 });
-
-module.exports = router;

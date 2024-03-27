@@ -33,5 +33,9 @@
 
 .toggle-link {
   cursor: pointer;
+  color: #007bff;
+}
+
+.error-message {
   color: red;
 }

@@ -1,9 +1,9 @@
-// Publish.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "../public/publish.css";
 
 const Publish = () => {
-  const [topic, setTopic] = useState('');
-  const [message, setMessage] = useState('');
+  const [topic, setTopic] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -11,12 +11,25 @@ const Publish = () => {
   };
 
   return (
-    <div>
-      <h2>Publish Message</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Topic" value={topic} onChange={(e) => setTopic(e.target.value)} />
-        <textarea placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
-        <button type="submit">Publish</button>
+    <div className="publish-container">
+      <h2 className="publish-header">Publish Message</h2>
+      <form onSubmit={handleSubmit} className="publish-form">
+        <input
+          type="text"
+          placeholder="Topic"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+          className="publish-input"
+        />
+        <textarea
+          placeholder="Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="publish-textarea"
+        ></textarea>
+        <button type="submit" className="publish-button">
+          Publish
+        </button>
       </form>
     </div>
   );

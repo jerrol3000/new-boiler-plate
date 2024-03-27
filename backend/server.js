@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // auth and api routes
-app.use("/messages", require("./routines/messages"));
-app.use("/", require("./routines/auth"));
+app.use("/auth", require("./routines/auth"));
+// app.use("/api", require("./api"));
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
