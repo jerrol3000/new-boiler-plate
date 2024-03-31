@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  entry: ["./frontend/index.js"],
+  entry: ["./client/src/index.js"],
   output: {
     path: __dirname,
     filename: "./public/bundle.js",
